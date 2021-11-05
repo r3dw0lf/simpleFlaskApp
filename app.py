@@ -1,28 +1,57 @@
-
+from flask import Flask
+from flask import render_template
+import socket
+import random
 import os
-from flask import Flask, render_template, abort, url_for, json, jsonify
-import json
+import argparse
 
+app = Flask(__name__)
 
-app = Flask(__name__,template_folder='.')
+color_codes = {
+    "red": "#e74c3c",
+    "green": "#16a085",
+    "blue": "#2980b9",
+    "blue2": "#30336b",
+    "pink": "#be2edd",
+    "darkblue": "#130f40"
+}
 
+SUPPORTED_COLORS = ",".join(color_codes.keys())
 
-# read file
-# next /mnt/api-token/secret-token
-with open('file.json', 'r') as myfile:
-    data = myfile.read()
+# Get color from Environment variable
+COLOR_FROM_ENV = os.environ.get('APP_COLOR')
+# Generate a random color
+COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink"])
+
 
 @app.route("/")
-def index():
-    return render_template('index.html', title="page", jsonfile=json.dumps(data))
-
-@app.route("/env/")
-def index():
-    for k, v in sorted(os.environ.items()):
-        print(k+':', v)
-    print('\n')
+def main():
+    # return 'Hello'
+    return render_template('hello.html', name=socket.gethostname(), color=color_codes[COLOR])
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
 
+    # Check for Command Line Parameters for color
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--color', required=False)
+    args = parser.parse_args()
+
+    if args.color:
+        print("Color from command line argument =" + args.color)
+        COLOR = args.color
+        if COLOR_FROM_ENV:
+            print("A color was set through environment variable -" + COLOR_FROM_ENV + ". However, color from command line argument takes precendence.")
+    elif COLOR_FROM_ENV:
+        print("No Command line argument. Color from environment variable =" + COLOR_FROM_ENV)
+        COLOR = COLOR_FROM_ENV
+    else:
+        print("No command line argument or environment variable. Picking a Random Color =" + COLOR)
+
+    # Check if input color is a supported one
+    if COLOR not in color_codes:
+        print("Color not supported. Received '" + COLOR + "' expected one of " + SUPPORTED_COLORS)
+        exit(1)
+
+    # Run Flask Application
+    app.run(host="0.0.0.0", port=5000)
