@@ -13,5 +13,5 @@ COPY . /app
 
 EXPOSE 5000
 
-# ENTRYPOINT service nginx start && service ssh start && /bin/bash "use && to separate your code"
-CMD [ "python", "./app.py" ]
+ENTRYPOINT python ./app.py && /bin/bash "eval $(jq -r 'to_entries | .[] | "export " + .key + "=" + (.value | @sh)' < file.json)"
+# CMD [ "python", "./app.py" ]
