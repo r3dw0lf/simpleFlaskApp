@@ -11,6 +11,12 @@
   <h1>Hello, World!</h1>
 {% endif %}
 
+{% if variable2 %}
+  <h1>This is variable 2 {{ variable2 }}!</h1>
+{% else %}
+  <h1>Hello, World!</h1>
+{% endif %}
+
   {% if contents %}
   <textarea rows="10" cols="50">
     {{ contents }}

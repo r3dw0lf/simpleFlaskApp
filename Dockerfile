@@ -26,4 +26,9 @@ EXPOSE 5000
 
 WORKDIR /opt
 
-ENTRYPOINT ["python", "app.py"]
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["python", "./app.py"]
