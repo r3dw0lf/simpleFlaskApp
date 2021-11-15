@@ -12,9 +12,9 @@
 {% endif %}
 
 {% if variable2 %}
-  <h1>This is variable 2 {{ variable2 }}!</h1>
+  <h1>This is HTTPD_DOCUMENT_ROOT {{ variable2 }}!</h1>
 {% else %}
-  <h1>Hello, World!</h1>
+  <h1>Could not load HTTPD_DOCUMENT_ROOT</h1>
 {% endif %}
 
   {% if contents %}

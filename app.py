@@ -24,7 +24,7 @@ COLOR_FROM_ENV = os.environ.get('APP_COLOR')
 COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink"])
 # 
 
-VARIABLE2 = os.environ.get('CITY')
+VARIABLE2 = os.environ.get('HTTPD_DOCUMENT_ROOT')
 
 @app.route("/")
 def main():
